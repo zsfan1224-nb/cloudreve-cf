@@ -2,13 +2,24 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- 添加禁止缩放的设置 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>404 - Interactive Page Not Found</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            /* 添加禁止选择文本 */
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+        }
+
+        /* 添加禁止触摸缩放 */
+        html {
+            touch-action: manipulation;
         }
 
         body {
@@ -116,6 +127,11 @@
     </div>
 
     <script>
+        // 禁用双指缩放
+        document.addEventListener('gesturestart', function(e) {
+            e.preventDefault();
+        });
+
         // 3D 卡片效果
         const card = document.getElementById('errorCard');
         document.addEventListener('mousemove', (e) => {
