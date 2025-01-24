@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>404 - Page Not Found</title>
+    <title>404 - Interactive Page Not Found</title>
     <style>
         * {
             margin: 0;
@@ -19,12 +19,14 @@
             align-items: center;
             justify-content: center;
             color: #2d3436;
+            overflow: hidden;
         }
 
         .container {
             text-align: center;
             padding: 2rem;
             max-width: 600px;
+            position: relative;
         }
 
         .error-code {
@@ -32,12 +34,20 @@
             font-weight: bold;
             color: #2d3436;
             animation: float 6s ease-in-out infinite;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .error-code:hover {
+            transform: scale(1.1) rotate(5deg);
         }
 
         .error-text {
             font-size: 24px;
             margin: 20px 0;
             color: #636e72;
+            position: relative;
         }
 
         .home-button {
@@ -48,41 +58,162 @@
             text-decoration: none;
             border-radius: 25px;
             font-weight: 500;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            transition: all 0.3s ease;
+            margin: 10px;
+            border: none;
+            cursor: pointer;
         }
 
         .home-button:hover {
             transform: translateY(-2px);
             box-shadow: 0 5px 15px rgba(9, 132, 227, 0.3);
+            background-color: #0773c5;
         }
 
-        @keyframes float {
-            0% {
-                transform: translateY(0px);
-            }
-            50% {
-                transform: translateY(-20px);
-            }
-            100% {
-                transform: translateY(0px);
-            }
+        .home-button:active {
+            transform: translateY(1px);
         }
 
         .illustration {
             font-size: 100px;
             margin: 20px 0;
-            animation: rotate 10s linear infinite;
+            position: relative;
+            display: inline-block;
+            cursor: pointer;
         }
 
-        @keyframes rotate {
-            0% {
-                transform: rotate(0deg);
-            }
-            100% {
-                transform: rotate(360deg);
-            }
+        .illustration:hover {
+            animation: shake 0.5s ease-in-out;
         }
 
+        /* 粒子效果 */
+        .particles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .particle {
+            position: absolute;
+            background: #0984e3;
+            border-radius: 50%;
+            pointer-events: none;
+            opacity: 0;
+        }
+
+        /* 悬浮卡片效果 */
+        .error-card {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transform-style: preserve-3d;
+            transition: transform 0.3s ease;
+        }
+
+        /* 动画关键帧 */
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: rotate(0); }
+            25% { transform: rotate(-10deg); }
+            75% { transform: rotate(10deg); }
+        }
+
+        @keyframes particleAnimation {
+            0% { transform: translate(0, 0); opacity: 1; }
+            100% { transform: translate(var(--x), var(--y)); opacity: 0; }
+        }
+
+        /* 搜索框样式 */
+        .search-container {
+            margin: 20px 0;
+            position: relative;
+        }
+
+        .search-input {
+            padding: 12px 20px;
+            width: 80%;
+            max-width: 400px;
+            border: none;
+            border-radius: 25px;
+            font-size: 16px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+
+        .search-input:focus {
+            outline: none;
+            box-shadow: 0 2px 20px rgba(9, 132, 227, 0.2);
+            transform: scale(1.02);
+        }
+
+        /* 社交媒体按钮 */
+        .social-buttons {
+            margin-top: 20px;
+        }
+
+        .social-button {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin: 0 10px;
+            background-color: #fff;
+            color: #0984e3;
+            line-height: 40px;
+            text-align: center;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .social-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        /* 暗黑模式切换按钮 */
+        .theme-toggle {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .theme-toggle:hover {
+            transform: rotate(180deg);
+        }
+
+        /* 暗黑模式样式 */
+        body.dark-mode {
+            background: linear-gradient(135deg, #2d3436 0%, #000000 100%);
+            color: #fff;
+        }
+
+        .dark-mode .error-card {
+            background: rgba(45, 52, 54, 0.9);
+            color: #fff;
+        }
+
+        .dark-mode .search-input {
+            background: #2d3436;
+            color: #fff;
+        }
+
+        .dark-mode .home-button {
+            background-color: #00b894;
+        }
+
+        /* 响应式设计 */
         @media (max-width: 480px) {
             .error-code {
                 font-size: 80px;
@@ -91,15 +222,128 @@
             .error-text {
                 font-size: 18px;
             }
+
+            .search-input {
+                width: 90%;
+            }
         }
     </style>
 </head>
 <body>
+    <button class="theme-toggle" onclick="toggleTheme()">🌓</button>
+    <div class="particles" id="particles"></div>
     <div class="container">
-        <div class="error-code">404</div>
-        <div class="illustration">🌍</div>
-        <div class="error-text">Oops! The page you're looking for doesn't exist.</div>
-        <a href="/" class="home-button">Back to Home</a>
+        <div class="error-card" id="errorCard">
+            <div class="error-code" id="errorCode">404</div>
+            <div class="illustration" id="illustration" onclick="triggerParticles(event)">🚀</div>
+            <div class="error-text">Oops! The page you're looking for has gone to space.</div>
+            
+            <div class="search-container">
+                <input type="text" class="search-input" placeholder="Try searching..." 
+                       onkeyup="searchAnimation(event)">
+            </div>
+
+            <a href="/" class="home-button">Back to Home</a>
+            <button class="home-button" onclick="refreshPage()">Try Again</button>
+
+            <div class="social-buttons">
+                <a href="#" class="social-button" title="Share on Twitter">🐦</a>
+                <a href="#" class="social-button" title="Share on Facebook">📘</a>
+                <a href="#" class="social-button" title="Send Email">📧</a>
+            </div>
+        </div>
     </div>
+
+    <script>
+        // 3D 卡片效果
+        const card = document.getElementById('errorCard');
+        document.addEventListener('mousemove', (e) => {
+            const xAxis = (window.innerWidth / 2 - e.pageX) / 25;
+            const yAxis = (window.innerHeight / 2 - e.pageY) / 25;
+            card.style.transform = `rotateY(${xAxis}deg) rotateX(${yAxis}deg)`;
+        });
+
+        // 粒子效果
+        function createParticle(x, y) {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            particle.style.width = Math.random() * 10 + 5 + 'px';
+            particle.style.height = particle.style.width;
+            particle.style.left = x + 'px';
+            particle.style.top = y + 'px';
+            
+            const angle = Math.random() * Math.PI * 2;
+            const velocity = Math.random() * 100 + 50;
+            const xDistance = Math.cos(angle) * velocity;
+            const yDistance = Math.sin(angle) * velocity;
+            
+            particle.style.setProperty('--x', xDistance + 'px');
+            particle.style.setProperty('--y', yDistance + 'px');
+            
+            particle.style.animation = 'particleAnimation 1s ease-out forwards';
+            
+            document.querySelector('.particles').appendChild(particle);
+            setTimeout(() => particle.remove(), 1000);
+        }
+
+        function triggerParticles(event) {
+            const rect = event.target.getBoundingClientRect();
+            const x = rect.left + rect.width / 2;
+            const y = rect.top + rect.height / 2;
+            
+            for (let i = 0; i < 20; i++) {
+                setTimeout(() => createParticle(x, y), i * 50);
+            }
+        }
+
+        // 404数字动画
+        const errorCode = document.getElementById('errorCode');
+        errorCode.addEventListener('click', () => {
+            errorCode.style.transform = 'scale(1.2) rotate(360deg)';
+            setTimeout(() => {
+                errorCode.style.transform = 'scale(1) rotate(0deg)';
+            }, 1000);
+        });
+
+        // 搜索框动画
+        function searchAnimation(event) {
+            const illustration = document.getElementById('illustration');
+            if (event.target.value.length > 0) {
+                illustration.textContent = '🔍';
+            } else {
+                illustration.textContent = '🚀';
+            }
+        }
+
+        // 刷新页面
+        function refreshPage() {
+            location.reload();
+        }
+
+        // 暗黑模式切换
+        function toggleTheme() {
+            document.body.classList.toggle('dark-mode');
+            const themeToggle = document.querySelector('.theme-toggle');
+            themeToggle.textContent = document.body.classList.contains('dark-mode') ? '🌞' : '🌓';
+        }
+
+        // 随机星星背景
+        function createStars() {
+            const container = document.querySelector('.container');
+            for (let i = 0; i < 50; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.left = Math.random() * 100 + 'vw';
+                star.style.top = Math.random() * 100 + 'vh';
+                star.style.animationDelay = Math.random() * 2 + 's';
+                container.appendChild(star);
+            }
+        }
+
+        // 初始化
+        window.onload = () => {
+            createStars();
+        };
+    </script>
 </body>
 </html>
